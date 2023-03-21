@@ -8,6 +8,7 @@ In addition, we want to know the average number of vaccinations given in the pre
 and the percent difference between the current year's number of vaccinations and the average of the previous two years (two decimals).
 
 Note: This uses the animal shelter database (https://github.com/ariarturner/SQL-for-Analytics/blob/main/Animal%20Shelter/Animal_Shelter_DB_and_Data.sql).
+https://dbfiddle.uk/Hd6sAwlN?hide=4
 */
 
 -- using CTE for clarity and because can't duplicate window for both previous_2_years_average and percent change
