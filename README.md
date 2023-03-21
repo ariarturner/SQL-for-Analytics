@@ -63,6 +63,7 @@ WITH <i>CTE_Name</i> AS (
   - because of query processing, has to be in clauses after dataset takes its final form (summarized data); otherwise there would be logic errors because of how expressions are evaluated &mdash; would be looking at data at "different points of time"
   - Note: the `WHERE` clause also filters the window
 - Window functions cannot be nested; if nested queries with window functions are required, use [CTEs]("https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#common-table-expressions") instead
+- [Window Functions Examples](https://github.com/ariarturner/SQL-for-Analytics/tree/main/Animal%20Shelter)
 
 **Basic Syntax**
 <pre>
