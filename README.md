@@ -6,7 +6,7 @@
 2. `WHERE` (Row filter)  
   a. Each row is evaluated, rows that fail are removed  
 3. `GROUP BY` (Grouping)  
-  a. Changes rows into row groups; now dealing with groups rather than rows  
+  a. Changes rows into row groups; now dealing with groups rather than rows; result is one row per group  
 4. `HAVING` (Group filter)  
   a. Each row *group* is evaluated, groups that fail are removed  
 5. `SELECT` (Return expressions)  
@@ -16,6 +16,31 @@
   a. Sorts the data  
 7. `OFFSET` / `FETCH` (Paging)  
   a. Limits records returned  
+
+## Functions
+Not all functions are supported by all databases
+- Arithmetic
+  - `COUNT`: returns the number of records of an expression
+  - `SUM`: returns the sum of the values of an expression
+  - `MIN`: returns the minimum value of an expression
+  - `MAX`: returns the maximum value of an expression
+  - `AVG`: returns the average value of an expression
+- Boolean
+  - `ALL` | `EVERY` : returns TRUE if ALL of the subquery values meet the condition; can be used in `SELECT`, `WHERE`, and `HAVING` clauses and window functions
+  - `ANY` | `SOME`: returns TRUE if ANY of the subquery values meet the condition; can be used in `WHERE` clauses and window functions
+- Array Aggregation
+- Statistical
+  - Variance
+  - Deviation
+  - Regression
+  - Inverse Distribution
+  - Hypothetical
+- Proprietary
+### Group Aggregate
+A group aggregate function returns a single value from multiple rows that make up a group; visibility into all rows of group
+### [Window Aggregate](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#window-functions)
+- See groups as defined by window &emdash; do not see individual rows, but can see other window groups
+- Most group aggregate functions work with windows
 
 ## Common Table Expressions
 - A temporary named result set created from a `SELECT `statement that can be used in subsequent `SELECT` statements; acts like a named query, whose result is stored in a virtual table that is eliminated after query execution
@@ -37,16 +62,17 @@ WITH <i>CTE_Name</i> AS (
 - Can be used in `SELECT` clause and `ORDER BY` clause of a SQL query
   - because of query processing, has to be in clauses after dataset takes its final form (summarized data); otherwise there would be logic errors because of how expressions are evaluated &mdash; would be looking at data at "different points of time"
   - Note: the `WHERE` clause also filters the window
+- Window functions cannot be nested; if nested queries with window functions are required, use [CTEs]("https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#common-table-expressions") instead
 
 **Basic Syntax**
 <pre>
 FUNCTION(<i>Expressions</i>)
-[<a href="https://github.com/ariarturner/SQL-for-Analytics/tree/main/README.md#filter-clause">FILTER</a> (WHERE <i>Predicates</i>)]
-<a href="https://github.com/ariarturner/SQL-for-Analytics/tree/main/README.md#over-clause">OVER</a> (
-  [<a href="https://github.com/ariarturner/SQL-for-Analytics/tree/main/README.md#partition-by-clause">PARITION BY</a> <i>Expressions</i>]
-  [<a href="https://github.com/ariarturner/SQL-for-Analytics/tree/main/README.md#order-by-clause">ORDER BY</a> <i>Expressions</i> [NULLS FIRST | LAST]]
-  [<a href="https://github.com/ariarturner/SQL-for-Analytics/tree/main/README.md#framing"><i>Frame Type</i></a> BETWEEN <i>Frame Start</i> AND <i>Frame End</i>]
-  [EXCLUDE <a href="https://github.com/ariarturner/SQL-for-Analytics/tree/main/README.md#framing"><i>Frame Exclusion</i></a>]
+[<a href="https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#filter-clause">FILTER</a> (WHERE <i>Predicates</i>)]
+<a href="https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#over-clause">OVER</a> (
+  [<a href="https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#partition-by-clause">PARITION BY</a> <i>Expressions</i>]
+  [<a href="https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#order-by-clause">ORDER BY</a> <i>Expressions</i> [NULLS FIRST | LAST]]
+  [<a href="https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#framing"><i>Frame Type</i></a> BETWEEN <i>Frame Start</i> AND <i>Frame End</i>]
+  [EXCLUDE <a href="https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#framing"><i>Frame Exclusion</i></a>]
   );
 </pre>
 
@@ -109,7 +135,7 @@ OVER (
 
 ### ORDER BY Clause
 - Dual Purpose
-  - Purpose: [framing](https://github.com/ariarturner/SQL-for-Analytics/tree/main/README.md#framing)
+  - Purpose: [framing](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#framing)
     - Note: if frame definition is not specified, default is `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`; not recommended
   <pre>
   FUNCTION(<i>Expressions</i>)
@@ -146,7 +172,7 @@ OVER (
 <pre>
 FUNCTION(<i>Expressions</i>)
 OVER (
-  PARITION BY <i>Expressions</i>
+  [PARITION BY <i>Expressions</i>]
   ORDER BY <i>Expressions</i>
   [NULLS { FIRST | LAST}]
   <i>Frame Type</i>
@@ -162,7 +188,7 @@ OVER (
     <pre>
     FUNCTION(<i>Expressions</i>)
     OVER (
-      PARITION BY <i>Expressions</i>
+      [PARITION BY <i>Expressions</i>]
       ORDER BY <i>Expressions</i>
       ROWS
       BETWEEN 
@@ -190,7 +216,7 @@ OVER (
     <pre>
     FUNCTION(<i>Expressions</i>)
     OVER (
-      PARITION BY <i>Expressions</i>
+      [PARITION BY <i>Expressions</i>]
       ORDER BY <i>Expressions</i>
       RANGE
       BETWEEN 
@@ -217,7 +243,7 @@ OVER (
     <pre>
     FUNCTION(<i>Expressions</i>)
     OVER (
-      PARITION BY <i>Expressions</i>
+      [PARITION BY <i>Expressions</i>]
       ORDER BY <i>Expressions</i>
       GROUPS
       BETWEEN 
