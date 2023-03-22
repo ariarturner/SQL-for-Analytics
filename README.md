@@ -282,8 +282,8 @@ OVER (
   );
 </pre>  
 - Rank Functions
-  - `ROW_NUMBER` assigns each records an consecutive, incremental row number
-      - Common use case: top N per group
+  - `ROW_NUMBER` assigns each record in a partition a number out of a sequence of monotonically increasing integers, beginning with one and up to the number of partition rows
+      - Common use case: top N per group, with only N records per group (in case of tie, rows chosen arbitrarily)
       <pre>
       ROW_NUMBER()
       OVER (
@@ -291,7 +291,7 @@ OVER (
         ORDER BY <i>Expressions</i>
         );
       </pre>  
-  - `NTILE` assigns each record a partition number starting at 1 through n, where n is the last record or the number of partitions; partitions are made to be as equal as possible
+  - `NTILE` assigns each record an integer number out of a monotonically increasing sequence starting with one and ending at either n or the number of rows within the partition in case there are fewer of those; NTILE segments a partition into as equal as possible n or less segments, each called a tile
     - Not very common
     <pre>
     NTILE(<i>N</i>)
@@ -300,3 +300,22 @@ OVER (
       ORDER BY <i>Expressions</i>
       );
     </pre>  
+  - `RANK` assigns each record a number between 1 and the number of distinct values in a partition; when a partition has tied sorting value expression rows, they are all assigned the same rank (which is why it differs from row number); the next value receives its rank disregarding the ties, introducing gaps in the sequence
+      - Common use case: top N per group, where we want all rows that tie
+      <pre>
+      RANK()
+      OVER (
+        [PARITION BY <i>Expressions</i>]
+        ORDER BY <i>Expressions</i>
+        );
+      </pre> 
+  - `DENSE_RANK` assigns each record a number between 1 and the number of distinct values in a partition; when a partition has tied sorting value expression rows, they are all assigned the same rank (which is why it differs from row number); the next value receives the next consecutive rank, so there are no gaps in the sequence
+      - Common use case: top distinct N per group, where we want all rows that tie
+      <pre>
+      DENSE_RANK()
+      OVER (
+        [PARITION BY <i>Expressions</i>]
+        ORDER BY <i>Expressions</i>
+        );
+      </pre> 
+ 
