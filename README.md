@@ -17,7 +17,7 @@
 7. `OFFSET` / `FETCH` (Paging)  
   a. Limits records returned  
 
-## Functions
+## Aggregate Functions
 Not all functions are supported by all databases
 - Arithmetic
   - `COUNT`: returns the number of records of an expression
@@ -266,3 +266,37 @@ OVER (
         - <code><i>N</i> PRECEDING</code>: ending at the <i>N</i>-th group before current row's group (current row's group - N)
         - <code><i>N</i> FOLLOWING</code>: ending at the <i>N</i>-th group after current row's group (current row's group + N)
         - `CURRENT ROW`: ending at the current row's group
+
+### [Window Aggregate Functions](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#aggregate-functions)
+- See groups as defined by window &emdash; do not see individual rows, but can see other window groups
+- Most group aggregate functions work with windows
+
+### Rank Window Functions
+- ranks define a relationship between a set of elements; in mathematics: weak order/ total preorder of elements  
+- `RANK` & `DENSE_RANK` are true rank functions, but `ROW_NUMBER` and `NTILE` can also be  
+<pre>
+RANK FUNCTION()
+OVER (
+  [PARITION BY <i>Expressions</i>]
+  ORDER BY <i>Expressions</i>
+  );
+</pre>  
+- Rank Functions
+  - `ROW_NUMBER` assigns each records an consecutive, incremental row number
+      - Common use case: top N per group
+      <pre>
+      ROW_NUMBER()
+      OVER (
+        [PARITION BY <i>Expressions</i>]
+        ORDER BY <i>Expressions</i>
+        );
+      </pre>  
+  - `NTILE` assigns each record a partition number starting at 1 through n, where n is the last record or the number of partitions; partitions are made to be as equal as possible
+    - Not very common
+    <pre>
+    NTILE(<i>N</i>)
+    OVER (
+      [PARITION BY <i>Expressions</i>]
+      ORDER BY <i>Expressions</i>
+      );
+    </pre>  
