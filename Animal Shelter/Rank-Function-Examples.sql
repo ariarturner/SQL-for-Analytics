@@ -119,6 +119,20 @@ WHERE 	number_of_more_checked_animals < 3
 ORDER BY 	species ASC, 
 		number_of_checkups DESC;
 
+-- Looking at ROW_NUMBER
+SELECT 	species, 
+	name, 
+	COUNT (*) AS number_of_checkups,
+	ROW_NUMBER () 
+	OVER 	(	PARTITION BY species 
+	 		ORDER BY COUNT(*) DESC
+	 	) AS row_number
+FROM	routine_checkups
+GROUP BY 	species,
+		name
+ORDER BY 	species ASC, 
+		number_of_checkups DESC;
+
 -- Solution with ROW_NUMBER, performs better than subquery
 WITH animal_checkups
 AS
@@ -133,7 +147,7 @@ FROM	reference_species AS s
 GROUP BY 	s.species, 
 		rc.name
 )
-, include_row_number_by_number_of_chekcups
+, include_row_number_by_number_of_checkups
 AS 
 (
 SELECT 	*,
@@ -145,11 +159,11 @@ SELECT 	*,
 	 	) AS row_number
 FROM	animal_checkups
 )
--- SELECT * FROM include_row_number_by_number_of_chekcups ORDER BY species, number_of_checkups DESC;
+-- SELECT * FROM include_row_number_by_number_of_checkups ORDER BY species, number_of_checkups DESC;
 SELECT 	species,
 	name,
 	number_of_checkups
-FROM 	include_row_number_by_number_of_chekcups
+FROM 	include_row_number_by_number_of_checkups
 WHERE 	row_number <= 3
 ORDER BY 	species ASC, 
 		number_of_checkups DESC;
@@ -197,3 +211,84 @@ SELECT 	species,
 FROM 	Animals
 ORDER BY 	species ASC, 
 		admission_date ASC;
+
+
+/*
+Variations of Top N
+*/
+
+-- Row number filter
+-- use case: top N per group, with only N records per group (in case of tie, rows chosen arbitrarily)
+WITH all_ranks
+AS
+(
+SELECT 	species, 
+	name, 
+	COUNT (*) AS number_of_checkups,
+	ROW_NUMBER () OVER W AS row_number,
+	RANK () OVER W AS rank,
+	DENSE_RANK () OVER W AS dense_rank
+FROM	routine_checkups
+GROUP BY species, name
+WINDOW 	W AS 	(	PARTITION BY species 
+			 ORDER BY COUNT(*) DESC
+		)
+)
+SELECT 	species,
+	name,
+	number_of_checkups
+FROM	all_ranks
+WHERE 	row_number <= 3
+ORDER BY 	species ASC,
+		number_of_checkups DESC;
+		
+-- Rank filter
+-- use case: top n per group, including all records that tie
+WITH all_ranks
+AS
+(
+SELECT 	species, 
+	name, 
+	COUNT (*) AS number_of_checkups,
+	ROW_NUMBER () 	OVER W AS row_number,
+	RANK () 	OVER W AS rank,
+	DENSE_RANK () 	OVER W AS dense_rank
+FROM	routine_checkups
+GROUP BY species, name
+WINDOW 	W AS 	(	PARTITION BY species 
+			 ORDER BY COUNT(*) DESC
+		)
+)
+SELECT 	species,
+	name,
+	number_of_checkups
+FROM	all_ranks
+WHERE 	rank <= 3
+ORDER BY 	species ASC,
+		number_of_checkups DESC;
+		
+-- Dense rank filter
+-- use case: top distinct n per group, including all records that tie
+WITH all_ranks
+AS
+(
+SELECT 	species, 
+	name, 
+	COUNT (*) AS number_of_checkups,
+	ROW_NUMBER () 	OVER W AS row_number,
+	RANK () 	OVER W AS rank,
+	DENSE_RANK () 	OVER W AS dense_rank
+FROM	routine_checkups
+GROUP BY species, name
+WINDOW 	W AS 	(	PARTITION BY species 
+			 ORDER BY COUNT(*) DESC
+		)
+)
+SELECT 	species,
+	name,
+	number_of_checkups
+FROM	all_ranks
+WHERE 	dense_rank <= 3
+ORDER BY 	species ASC,
+		number_of_checkups DESC;
+
