@@ -319,3 +319,27 @@ OVER (
         );
       </pre> 
  
+ ### Distribution Window Functions
+ - Distribution window functions compute a relative rank over a row R, within a window partition of R, expressed as an approximate numeric ratio between 0 and 1.
+  - `PERCENT_RANK`
+       - A percent rank function describes the probability that our random variable X evaluated at n, will take a value that is less than n.
+      - first row in each partition has a probability of 0
+      - <code> PERCENT_RANK(R<sub>n</sub>) &rarr; (Rk(R<sub>n</sub>)-1) / (N<sub>R</sub>-1)</code>
+    <pre>
+    PERCENT_RANK()
+    OVER (
+      [PARITION BY <i>Expressions</i>]
+      ORDER BY <i>Expressions</i>
+      );
+    </pre> 
+  - `CUME_DIST`
+   - A cumulative distribution function describes the probability that our random variable X evaluated at n, will take a value that is less than or equal to n.
+      - no rows have a probability of 0
+      - <code> CUME_DIST(R<sub>n</sub>) &rarr; N<sub>P(n)</sub> / N<sub>R</sub></code>
+    <pre>
+    CUME_DIST()
+    OVER (
+      [PARITION BY <i>Expressions</i>]
+      ORDER BY <i>Expressions</i>
+      );
+    </pre> 
