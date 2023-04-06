@@ -343,3 +343,40 @@ OVER (
       ORDER BY <i>Expressions</i>
       );
     </pre> 
+
+### Offset Window Functions
+- Look at rows "offset" from a specified origin
+- Two optional parameters: offset value and a default value replacement if the offset is out of partition bounds or does the row does not exist 
+  - if offset is not specified: 1 is assumed; if default is not specified: `NULL` is assumed 
+  - Optional clause to determine how `NULLS` are processed 
+    - IGNORE does not include `NULLS` in count towards offset 
+    - RESPECT includes `NULLS` in count towards offset 
+- Two major types of offset 
+  - Offset from current row 
+    - Partitioning is optional; frame is unncessary 
+      - `LEAD` 
+      - `LAG` 
+    <pre>
+    ROW OFFSET FUNCTION(<i>Expression</i>[, <i>Offset</i>, <i>Default</i>])
+    [{IGNORE | RESPECT} NULLS]
+    OVER (
+      [PARITION BY <i>Expressions</i>]
+      ORDER BY <i>Expressions</i>
+      );
+    </pre> 
+  - Offset from frame boundaries 
+    - Partitioning is optional; frame is mandatory (if frame is not specified, it is same default as defined above) 
+      - `FIRST_VALUE`: always points to first value of partition 
+      - `LAST_VALUE`: always points to last value of partition 
+      - `NTH_VALUE`: always points to the nth value from specified start (either first or last) 
+    <pre>
+    FRAME OFFSET FUNCTION(<i>Expression</i>, <i>Offset<span style="color:red">*</span></i>)
+    [FROM {FIRST | LAST}]<i><span style="color:red">*</span></i>
+    [{IGNORE | RESPECT} NULLS]
+    OVER (
+      [PARITION BY <i>Expressions</i>]
+      ORDER BY <i>Expressions</i>
+      <i>Frame Specifications</i>
+      );
+    </pre> 
+    <span style="color:red"><i>*</i> NTH_VALUE only</span> 
