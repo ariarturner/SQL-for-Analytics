@@ -3,14 +3,15 @@
 -- Animals temperature exception report --
 ------------------------------------------
 
-Create a report of the top 25% of animals per species that had the fewest “temperature exceptions”.
-Ignore animals that had no routine checkups.
+Create a report of the top 25% of animals per species that had the fewest “temperature exceptions”, ignoring animals that had no routine checkups.
 A “temperature exception” is a checkup temperature measurement that is either equal to or exceeds +/- 0.5% from the species' average.
 If two or more animals of the same species have the same number of temperature exceptions, those with the more recent exceptions should be returned.
 There is no need to return additional tied animals over the 25% mark. If the number of animals for a species does not divide by 4 without remainder, you may
 return 1 more animal, but not less.
 The report should be sorted by species, number of exceptions, and latest exception timestamp.
 
+Note: This uses the animal shelter database (https://github.com/ariarturner/SQL-for-Analytics/blob/main/Animal%20Shelter/Animal_Shelter_DB_and_Data.sql).
+https://dbfiddle.uk/yfNVWkwE?hide=16
 */
 
 -- for each checkup, compare temp to avg species temp
