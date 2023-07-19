@@ -3,18 +3,24 @@
 ## SQL Query Logical Processing Order
 1. `FROM` (Source data)  
   a. Full data set  
-2. `WHERE` (Row filter)  
+2. `ON` (Join attribute(s))  
+  a. The join attribute(s) define(s) the relationship between the joining data sets; source data sets are ordered by the join attribute(s) and then compared  
+  b. This clause can also be used as a filter for each individual source data set *before* they are joined  
+3. `JOIN` (Source data)  
+  a. A cartesian product of the source tables is evaluated based on the join attribute(s) and only matching rows are returned for the join type  
+4. `WHERE` (Row filter)  
   a. Each row is evaluated, rows that fail are removed  
-3. `GROUP BY` (Grouping)  
+  b. In a join, each row of the *joined* data set is evaluated  
+5. `GROUP BY` (Grouping)  
   a. Changes rows into row groups; now dealing with groups rather than rows; result is one row per group  
-4. `HAVING` (Group filter)  
+6. `HAVING` (Group filter)  
   a. Each row *group* is evaluated, groups that fail are removed  
-5. `SELECT` (Return expressions)  
+7. `SELECT` (Return expressions)  
   a. Each expression is evaluated for each row group, but the "shape" of the data is not altered (other than `DISTINCT`)  
   b. The scope of each expression is limited to same row or row group  
-6. `ORDER BY` (Presentation Order)  
+8. `ORDER BY` (Presentation Order)  
   a. Sorts the data  
-7. `OFFSET` / `FETCH` (Paging)  
+9. `OFFSET` / `FETCH` (Paging)  
   a. Limits records returned  
 
 ## Aggregate Functions
