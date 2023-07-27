@@ -49,7 +49,7 @@ A group aggregate function returns a single value from multiple rows that make u
 - Most group aggregate functions work with windows
 
 ## Common Table Expressions
-- A temporary named result set created from a `SELECT `statement that can be used in subsequent `SELECT` statements; acts like a named query, whose result is stored in a virtual table that is eliminated after query execution
+- A temporary named result set created from a `SELECT` statement that can be used in subsequent `SELECT` statements; acts like a named query, whose result is stored in a virtual table that is eliminated after query execution
 <pre>
 WITH <i>CTE_Name</i> AS (
   SELECT <i>Expressions</i>
