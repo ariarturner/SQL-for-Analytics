@@ -1,5 +1,12 @@
 # SQL for Analytics
 
+## SQL Environment
+- Catalog: set of schemas that constitute the description of a database  
+- Schema: the structure that contains descriptions of objects created by a user (base tables, views, constraints)  
+- [Data Definition Language (DDL)](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md##Data-Definition-Language-DDL): commands that define a database, including creating, altering, and dropping tables and establishing constraints  
+- [Data Manipulation Language (DML)](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md##Data-Manipulation-Language-DML): commands that maintain and query a database  
+- [Data Control Language (DCL)](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md##Data-Control-Language-DCL): commands that control a database, including administering priviledges and committing data  
+
 ## SQL Query Logical Processing Order
 1. `FROM` (Source data)  
   a. Full data set  
@@ -386,3 +393,54 @@ OVER (
       );
     </pre> 
     <span style="color:red"><i>*</i> NTH_VALUE only</span> 
+
+##  Data Definition Language (DDL)
+Define the database: create tables, indexes, views, etc.; establish foreign keys; drop or truncate tables  
+
+CREATE statements:  
+- `CREATE SCHEMA`: defines a portion of the database owned by a particular user  
+- `CREATE TABLE`: defines a new table and its columns  
+- `CREATE VIEW`: defines a logical table from one or more tables or views  
+- Others: `CREATE CHARACTER SET`, `CREATE COLLATION`, `CREATE TRANSLATION`, `CREATE ASSERTION`, `CREATE DOMAIN`  
+
+### CREATE TABLE
+<pre>
+CREATE TABLE <i>Table Name</i> (
+  {<i>Column Name</i>  <i>Data Type</i>  [<i>Column Constraint</i>]}.,..
+  [CONSTRAINT <i>Table Constraint</i> PRIMARY KEY (<i>Column Name</i>)].,..
+  [CONSTRAINT <i>Table Constraint</i> FOREIGN KEY (<i>Column Name</i>) REFERENCES <i>Reference Table</i>(<i>Reference Column</i>)].,..
+  [ON COMMIT {DELETE | PRESERVE} ROWS]
+);
+</pre>  
+
+#### Example
+<pre>
+CREATE TABLE ExampleOffice (
+    ID          BIGINT          NOT NULL,
+    Name        VARCHAR2(20)    NOT NULL,
+    Street      VARCHAR2(50),
+    City        VARCHAR2(50),
+    State       VARCHAR2(20),
+    Country     VARCHAR2(50),
+  CONSTRAINT ExampleOffice_PK PRIMARY KEY (ID)
+);
+CREATE TABLE ExampleEmp (
+    ID          BIGINT          NOT NULL,
+    Name        VARCHAR2(30)    NOT NULL,
+    HireDate    DATE,
+    Active      BOOLEAN,
+    Salary      DOUBLE,
+    LastShift   TIMESTAMP,
+    Office      VARCHAR2(20)
+  CONSTRAINT ExampleEmp_PK PRIMARY KEY (ID)
+  CONSTRAINT ExampleEmp_FK FOREIGN KEY (Office) REFERENCES ExampleOffice(Name)
+);
+</pre>  
+
+
+## Data Manipulation Language (DML)
+Load the database: insert data; update the database  
+Manipulate the database: select (querying)  
+
+## Data Control Language (DCL)
+Control the database: grant, add, revoke  
