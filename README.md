@@ -357,7 +357,7 @@ OVER (
       );
     </pre> 
 
-### Offset Window Functions
+### Offset Window Functions  
 - Look at rows "offset" from a specified origin
 - Two optional parameters: offset value and a default value replacement if the offset is out of partition bounds or does the row does not exist 
   - if offset is not specified: 1 is assumed; if default is not specified: `NULL` is assumed 
@@ -394,16 +394,16 @@ OVER (
     </pre> 
     <span style="color:red"><i>*</i> NTH_VALUE only</span> 
 
-##  Data Definition Language (DDL)
+##  Data Definition Language (DDL)  
 Define the database: create tables, indexes, views, etc.; establish foreign keys; drop or truncate tables  
 
-CREATE statements:  
+### CREATE Statements  
 - `CREATE SCHEMA`: defines a portion of the database owned by a particular user  
 - `CREATE TABLE`: defines a new table and its columns  
 - `CREATE VIEW`: defines a logical table from one or more tables or views  
 - Others: `CREATE CHARACTER SET`, `CREATE COLLATION`, `CREATE TRANSLATION`, `CREATE ASSERTION`, `CREATE DOMAIN`  
 
-### CREATE TABLE
+#### CREATE TABLE  
 <pre>
 CREATE TABLE <i>Table Name</i> (
   {<i>Column Name</i>  <i>Data Type</i>  [<i>Column Constraint</i>]}.,..
@@ -413,7 +413,7 @@ CREATE TABLE <i>Table Name</i> (
 );
 </pre>  
 
-#### Example
+##### Example  
 <pre>
 CREATE TABLE ExampleOffice (
     ID          BIGINT          NOT NULL,
@@ -421,7 +421,7 @@ CREATE TABLE ExampleOffice (
     Street      VARCHAR2(50),
     City        VARCHAR2(50),
     State       VARCHAR2(20),
-    Country     VARCHAR2(50),
+    Country     VARCHAR2(50)    DEFAULT 'United States',
   CONSTRAINT ExampleOffice_PK PRIMARY KEY (ID)
 );
 CREATE TABLE ExampleEmp (
@@ -437,10 +437,81 @@ CREATE TABLE ExampleEmp (
 );
 </pre>  
 
+### ALTER Statements  
+Make changes to an existing table  
 
-## Data Manipulation Language (DML)
+<pre>  
+ALTER TABLE <i>Table Name</i> <i>Alter Table Action</i> ;  
+</pre>  
+
+Alter Table Actions:  
+- `ADD COLUMN <i>Column Name</i> <i>Data Type</i> [<i>Column Contraints</i>]`  
+- `ALTER COLUMN <i>Column Name</i> [<i>Date Type</i>] [<i>Column Constraints</i>]`  
+- `DROP COLUMN <i>Column Name</i>`  
+
+### DROP Statements  
+Remove a table from schema  
+
+`DROP TABLE <i>Table Name</i>`  
+
+## Data Manipulation Language (DML)  
 Load the database: insert data; update the database  
 Manipulate the database: select (querying)  
+
+### Load the database  
+
+#### INSERT Statement  
+Adds one or more rows to a table  
+
+- Insert complete record:
+<pre>
+  INSERT INTO <i>Table Name</i> VALUES (<i>Value</i>.,..);
+</pre>
+- Insert partial record (some null attributes):
+<pre>
+  INSERT INTO <i>Table Name</i> (<i>Column Name</i>.,..) VALUES (<i>Value</i>.,..);
+</pre>
+- Insert from query:
+<pre>
+  INSERT INTO <i>Table Name</i> SELECT <i>Expressions</i> FROM <i>Table</i>
+  [<i>Join Type</i> JOIN <i>Table2</i> 
+  ON <i>Table.Expressions</i> = <i>Table2.Expressions</i>]
+  [WHERE <i>Predicates</i>]
+  [GROUP BY <i>Expressions</i>]
+  [HAVING <i>Predicates</i>]
+  [ORDER BY <i>Expressions</i>];
+</pre>
+
+### Update the database  
+
+#### DELETE Statement  
+Remove rows from a table  
+
+- Delete all rows: `DELETE FROM <i>Table Name</i>;`
+- Delete rows based on condition: `DELETE FROM <i>Table Name</i> WHERE <i>Predicates</i>;`
+
+#### UPDATE Statement
+Modify data in existing rows
+
+<pre>
+  UPDATE <i>Table Name</i>
+  SET <i>Column Name</i> = <i>Value</i>
+  [WHERE <i>Predicates</i>];
+</pre>
+
+#### MERGE Statement
+Combination of insert and update in one statement  
+
+<pre>
+  MERGE INTO <i>Table Name</i> AS <i>Destination Alias</i>
+  USING (SELECT <i>Column(s)</i> FROM <i>Source Table</i> AS <i>Source Alias</i>
+    ON (<i>Destination Alias</i>.<i>Column Name</i> = <i>Source Alias</i>.<i>Column Name</i>)
+  WHEN MATCHED THEN UPDATE
+    <i>Destination Alias</i>.<i>Column Name</i> = <i>Source Alias</i>.<i>Column Name</i>
+  WHEN NOT MATCHED THEN INSERT
+  (<i>Column(s)</i>) VALUES (<i>Source Alias</i>.<i>Column(s)</i>)
+  ;
+</pre>
 
 ## Data Control Language (DCL)
 Control the database: grant, add, revoke  
