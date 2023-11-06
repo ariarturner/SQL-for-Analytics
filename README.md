@@ -3,9 +3,9 @@
 ## SQL Environment
 - Catalog: set of schemas that constitute the description of a database  
 - Schema: the structure that contains descriptions of objects created by a user (base tables, views, constraints)  
-- [Data Definition Language (DDL)](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md##Data-Definition-Language-DDL): commands that define a database, including creating, altering, and dropping tables and establishing constraints  
-- [Data Manipulation Language (DML)](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md##Data-Manipulation-Language-DML): commands that maintain and query a database  
-- [Data Control Language (DCL)](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md##Data-Control-Language-DCL): commands that control a database, including administering priviledges and committing data  
+- [Data Definition Language (DDL)](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#Data-Definition-Language-DDL): commands that define a database, including creating, altering, and dropping tables and establishing constraints  
+- [Data Manipulation Language (DML)](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#Data-Manipulation-Language-DML): commands that maintain and query a database  
+- [Data Control Language (DCL)](https://github.com/ariarturner/SQL-for-Analytics/blob/main/README.md#Data-Control-Language-DCL): commands that control a database, including administering priviledges and committing data  
 
 ## SQL Query Logical Processing Order
 1. `FROM` (Source data)  
