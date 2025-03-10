@@ -44,7 +44,7 @@ The names and datatypes will vary slightly based on query engine.
   - `TINYINT`: stores an integer with a minimum value of `-2^7` and a maximum value of `2^7 - 1`
   - `SMALLINT`: stores an integer with a minimum value of `-2^15` and a maximum value of `2^15 - 1`
   - `INT`/`INTEGER`: stores an integer with a minimum value of `-2^31` and a maximum value of `2^31 - 1`
-  - `BIGINT`: stores an integer with a minimum value of `-2^63` and a maximum value of `2^31 - 1`
+  - `BIGINT`: stores an integer with a minimum value of `-2^63` and a maximum value of `2^63 - 1`
   - `INTEGER(p)`: stores exact numbers with no decimals, p is number of digits
 - Temporal
   - `DATE`: stores century, year, month, day, hour, minute, and second
