@@ -30,6 +30,32 @@
 9. `OFFSET` / `FETCH` (Paging)  
   a. Limits records returned  
 
+## Data Types
+The names and datatypes will vary slightly based on query engine.  
+- Boolean
+  - `BOOLEAN`: captures boolean values `true` and `false`
+- String
+  - `VARCHAR(n)` / `VARCHAR2(n)`: stores a variable length character data with an optional maximum length, where n is the maximum number of characters for column length if specified (max length is 4000 characters)
+  - `CHAR(n)`: stores a fixed length character string, where n is number of characters for column length (max length is 2000 characters)
+- Numeric
+  - `REAL`: stores a 32-bit inexact, variable-precision implementing the IEEE Standard 754 for Binary Floating-Point Arithmetic
+  - `DOUBLE`: stores a 64-bit inexact, variable-precision implementing the IEEE Standard 754 for Binary Floating-Point Arithmetic
+  - `DECIMAL(p,s)` / `NUMBER(p,s)`: an exact decimal number with precision up to 38 digits, where p is precision (total number of digits) and s is the scale (number of digits to the right of the decimal point)
+  - `TINYINT`: stores an integer with a minimum value of `-2^7` and a maximum value of `2^7 - 1`
+  - `SMALLINT`: stores an integer with a minimum value of `-2^15` and a maximum value of `2^15 - 1`
+  - `INT`/`INTEGER`: stores an integer with a minimum value of `-2^31` and a maximum value of `2^31 - 1`
+  - `BIGINT`: stores an integer with a minimum value of `-2^63` and a maximum value of `2^31 - 1`
+  - `INTEGER(p)`: stores exact numbers with no decimals, p is number of digits
+- Temporal
+  - `DATE`: stores century, year, month, day, hour, minute, and second
+  - `TIME(p)`: stores time of day (hour, minute, second) without a time zone with p digits of precision for the fraction of seconds, if p is not specified the default is 3 millisecond precision
+  - `TIME(p) WITH TIME ZONE`: stores time of day (hour, minute, second) with a time zone with p digits of precision for the fraction of seconds, if p is not specified the default is 3 millisecond precision
+  - `TIMESTAMP(p)` / `TIMESTAMP(p) WITHOUT TIME ZONE`: stores calendar date and time of day without a time zone with p digits of precision for the fraction of seconds, if p is not specified the default is 3 millisecond precision
+  - `TIMESTAMP(p) WITH TIME ZONE`: stores calendar date and time of day with a time zone with p digits of precision for the fraction of seconds, if p is not specified the default is 3 millisecond precision
+  - `TIMESTAMP(p) WITH LOCAL TIME ZONE`: stores calendar date and time of day with the local time zone with p digits of precision for the fraction of seconds, if p is not specified the default is 3 millisecond precision
+  - `INTERVAL YEAR TO MONTH`: stores difference between dates and times
+  - `INTERVAL DAY TO SECOND`: stores difference between dates and times
+
 ## Aggregate Functions
 Not all functions are supported by all databases
 - Arithmetic
