@@ -56,6 +56,45 @@ The names and datatypes will vary slightly based on query engine.
   - `INTERVAL YEAR TO MONTH`: stores difference between dates and times
   - `INTERVAL DAY TO SECOND`: stores difference between dates and times
 
+## Aliasing
+SQL aliases are temporary names given to a table or a column in a table. They are used to make a query more readable.  
+
+A column alias is created with the `AS` keyword.
+<pre>
+SELECT <i>Expression</i> AS <i>Alias</i>
+FROM <i>Table</i>
+[<i>Join Type</i> JOIN <i>Table2</i> 
+ON <i>Table.Expressions</i> = <i>Table2.Expressions</i>]
+[WHERE <i>Predicates</i>]
+[GROUP BY <i>Expressions</i>]
+[HAVING <i>Predicates</i>]
+[ORDER BY <i>Expressions</i>]
+</pre>
+
+How a table alias is created depends on the query engine. Some query engines create a table alias using the `AS` keyword, but others just follow the table name with the alias.
+<pre>
+SELECT <i>Expressions</i>
+FROM <i>Table</i> AS <i>Alias</i>
+[<i>Join Type</i> JOIN <i>Table2</i> AS <i>Alias2</i>
+ON <i>Alias.Expressions</i> = <i>Alias2.Expressions</i>]
+[WHERE <i>Predicates</i>]
+[GROUP BY <i>Expressions</i>]
+[HAVING <i>Predicates</i>]
+[ORDER BY <i>Expressions</i>]
+</pre>
+
+<pre>
+SELECT <i>Expressions</i>
+FROM <i>Table</i> <i>Alias</i>
+[<i>Join Type</i> JOIN <i>Table2</i> <i>Alias2</i>
+ON <i>Alias.Expressions</i> = <i>Alias2.Expressions</i>]
+[WHERE <i>Predicates</i>]
+[GROUP BY <i>Expressions</i>]
+[HAVING <i>Predicates</i>]
+[ORDER BY <i>Expressions</i>]
+</pre>
+
+
 ## Aggregate Functions
 Not all functions are supported by all databases
 - Arithmetic
